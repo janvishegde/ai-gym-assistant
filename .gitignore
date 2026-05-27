@@ -1,5 +1,25 @@
+# Python
 venv/
 __pycache__/
-.env
-node_modules/
 *.pyc
+*.pyo
+.pytest_cache/
+
+# Environment & secrets
+.env
+*.env
+
+# FAISS index (too large for GitHub)
+faiss_index/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (for frontend later)
+node_modules/
+.next/
+
+# IDE
+.vscode/
+.idea/
