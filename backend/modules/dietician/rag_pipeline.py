@@ -86,7 +86,7 @@ def get_qa_chain():
         print("Building index...")
         vector_store = build_vector_store()
         if vector_store is None:
-            raise Exception("No PDFs found.")
+            raise Exception("Could not build vector store. Check your PDFs.")
     else:
         print("Loading existing index...")
         vector_store = load_vector_store()
@@ -113,11 +113,15 @@ Answer:""")
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
 
+    # Return sources separately using RunnablePassthrough
     chain = (
-        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        {"context": retriever | format_docs,
+         "question": RunnablePassthrough(),
+         "docs": retriever}
         | prompt
         | llm
         | StrOutputParser()
     )
 
-    return chain
+    return retriever, chain
+

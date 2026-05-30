@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 import sys, os
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -25,6 +25,7 @@ class RecommendInput(BaseModel):
     fitness_level: Optional[str] = "beginner"
     location: Optional[str] = ""
     available_days: Optional[int] = 3
+    include_videos: Optional[bool] = True
     user_profile: Optional[Dict[str, Any]] = {}
 
 
@@ -36,21 +37,26 @@ def status():
 @router.post("/recommend")
 def recommend(data: RecommendInput):
     chain = get_chain()
+    from video_engine import search_youtube_videos
 
     query = (
         f"Goal: {data.goal}. "
         f"Fitness level: {data.fitness_level}. "
         f"Available {data.available_days} days per week. "
-        f"Location preference: {data.location or 'any'}. "
-        f"Additional info: {data.user_profile}."
+        f"Location: {data.location or 'any'}."
     )
 
     result = chain.invoke(query)
+
+    videos = []
+    if data.include_videos:
+        videos = search_youtube_videos(data.goal, max_results=3)
 
     return {
         "goal": data.goal,
         "fitness_level": data.fitness_level,
         "recommendation": result,
+        "video_recommendations": videos,
         "module": "Gym Recommender"
     }
 
@@ -58,6 +64,7 @@ def recommend(data: RecommendInput):
 @router.post("/workout-plan")
 def get_workout_plan(data: RecommendInput):
     chain = get_chain()
+    from video_engine import search_youtube_videos
 
     query = (
         f"Create a {data.available_days}-day per week workout plan for "
@@ -66,8 +73,11 @@ def get_workout_plan(data: RecommendInput):
     )
 
     result = chain.invoke(query)
+    videos = search_youtube_videos(f"{data.goal} workout tutorial", max_results=3)
+
     return {
         "workout_plan": result,
+        "tutorial_videos": videos,
         "module": "Gym Recommender"
     }
 
@@ -77,10 +87,8 @@ def find_gyms(data: RecommendInput):
     chain = get_chain()
 
     query = (
-        f"What type of gym or fitness facility would you recommend for "
-        f"someone in {data.location or 'any city'} with goal: {data.goal} "
-        f"and fitness level: {data.fitness_level}? "
-        f"What features should they look for?"
+        f"What type of gym would suit someone in {data.location or 'any city'} "
+        f"with goal: {data.goal} and level: {data.fitness_level}?"
     )
 
     result = chain.invoke(query)
