@@ -6,3 +6,10 @@ motor
 pydantic
 python-multipart
 httpx
+langchain
+langchain-community
+langchain-openai
+faiss-cpu
+openai
+pymupdf
+tiktoken
