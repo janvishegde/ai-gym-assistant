@@ -32,5 +32,22 @@
     "reps_completed": 15,
     "target_reps": 12,
     "form_accuracy": 80.0
+  },
+  {
+    "user_name": "Janvi",
+    "date": "2026-06-20",
+    "timestamp": "2026-06-20T13:47:32.510788",
+    "total_score": 92.0,
+    "grade": "A",
+    "feedback": "Outstanding performance!",
+    "breakdown": {
+      "rep_score": 40.0,
+      "form_score": 32.0,
+      "consistency_bonus": 20
+    },
+    "exercise": "squat",
+    "reps_completed": 15,
+    "target_reps": 12,
+    "form_accuracy": 80.0
   }
 ]

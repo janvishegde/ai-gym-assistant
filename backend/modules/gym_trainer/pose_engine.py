@@ -83,17 +83,17 @@ def analyze_pushup(landmarks):
 EXERCISES = {
     "squat": {
         "analyzer": analyze_squat,
-        "down_threshold": 100,
-        "up_threshold": 160
+        "down_threshold": 110,   # was 100 — easier to trigger
+        "up_threshold":   150    # was 160 — easier to trigger
     },
     "curl": {
         "analyzer": analyze_curl,
-        "down_threshold": 40,
-        "up_threshold": 140
+        "down_threshold": 50,    # was 40
+        "up_threshold":   120    # was 140
     },
     "pushup": {
         "analyzer": analyze_pushup,
-        "down_threshold": 70,
-        "up_threshold": 140
+        "down_threshold": 80,    # was 70
+        "up_threshold":   130    # was 140
     }
 }
