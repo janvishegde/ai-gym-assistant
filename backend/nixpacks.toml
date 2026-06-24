@@ -1,5 +1,8 @@
 [phases.setup]
-nixPkgs = ["python311"]
+nixPkgs = ["python311", "libxcb", "xorg.libX11", "xorg.libXext"]
 
-[variables]
-PYTHON_VERSION = "3.11.9"
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[start]
+cmd = "uvicorn main:app --host 0.0.0.0 --port $PORT"
